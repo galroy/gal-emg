@@ -1,0 +1,4 @@
+../Core/Src/ledControl.c:11:6:ledInit	24	static
+../Core/Src/ledControl.c:23:6:ledOn	16	static
+../Core/Src/ledControl.c:30:6:ledOff	16	static
+../Core/Src/ledControl.c:37:6:setBrightness	16	static

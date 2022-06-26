@@ -1,0 +1,5 @@
+../Core/Src/buzzer.c:11:6:buzzerInit	16	static
+../Core/Src/buzzer.c:17:6:buzzerOn	16	static
+../Core/Src/buzzer.c:23:6:buzzerOff	16	static
+../Core/Src/buzzer.c:29:6:buzzerOnFreq	16	static
+../Core/Src/buzzer.c:38:9:GetTav	16	static

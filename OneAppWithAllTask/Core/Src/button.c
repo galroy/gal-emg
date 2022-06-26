@@ -1,0 +1,51 @@
+/*
+ * button.c
+ *
+ *  Created on: Jun 21, 2022
+ *      Author: student
+ */
+#include "button.h"
+#define LONG_PRESS_MS 500
+
+
+void buttonInit(BUTTON *btn,ButtonName btnName, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin){
+	if(btn == NULL){
+		return;
+	}
+	btn->buttonState = BUTTON_STATE_NONE;
+	btn->GPIOx = GPIOx;
+	btn->GPIO_Pin = GPIO_Pin;
+	btn->btnName = btnName;
+	btn->pressTime = 0;
+}
+BUTTON_STATE getButtonState(BUTTON *btn){
+	return btn->buttonState;
+}
+
+void SetButtonNone(BUTTON *btn){
+	if(btn != NULL){
+		btn->buttonState = BUTTON_STATE_NONE;
+	}
+}
+
+void buttonOnInterrupt(BUTTON *btn, uint16_t pin)
+{
+	if (pin == btn->GPIO_Pin) {
+		if (HAL_GPIO_ReadPin(btn->GPIOx, btn->GPIO_Pin) == 0) {
+			btn->pressTime = HAL_GetTick();
+		}
+		else {
+			if (HAL_GetTick() - btn->pressTime > LONG_PRESS_MS) {
+				btn->buttonState = BUTTON_STATE_LONG_PRESS;
+			}
+			else {
+				btn->buttonState = BUTTON_STATE_PRESS;
+			}
+		}
+	}
+	else{
+		btn->buttonState = BUTTON_STATE_NONE;
+	}
+}
+
+

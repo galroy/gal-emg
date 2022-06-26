@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;UartReceiveAndCmdProcessingInterrupts/Core/Src/binaryprotocol.c&apos; to &apos;statemachine.c&apos;" description="Rename resource &apos;binaryprotocol.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/binaryprotocol.c" name="statemachine.c" stamp="1654622890392" updateReferences="true"/>
+</session>

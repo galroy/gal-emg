@@ -1,0 +1,6 @@
+../Core/Src/led.c:13:6:ledInit	24	static
+../Core/Src/led.c:25:6:ledOn	16	static
+../Core/Src/led.c:32:6:ledOff	16	static
+../Core/Src/led.c:39:6:ledBlink	16	static
+../Core/Src/led.c:49:6:ledOnTimerInterrupt	16	static
+../Core/Src/led.c:60:6:ledOnPeriodicTask	16	static

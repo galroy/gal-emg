@@ -1,0 +1,28 @@
+/*
+ * button.h
+ *
+ *  Created on: Jun 21, 2022
+ *      Author: student
+ */
+
+#ifndef SRC_BUTTON_H_
+#define SRC_BUTTON_H_
+
+#include "MyMain.h"
+
+typedef enum buttontate_{
+	BUTTON_STATE_NONE,
+	BUTTON_STATE_PRESS,
+	BUTTON_STATE_LONG_PRESS,
+	BUTTON_STATE_DOUBLE_PRESS
+} BUTTON_STATE;
+
+typedef struct _button{
+	BUTTON_STATE buttonState;
+} BUTTON;
+
+void buttonInit(BUTTON *btn, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
+
+
+
+#endif /* SRC_BUTTON_H_ */

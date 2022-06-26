@@ -1,0 +1,32 @@
+/*
+ * button.c
+ *
+ *  Created on: Jun 19, 2022
+ *      Author: student
+ */
+
+#include "button.h"
+//extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim3;
+void buzzerInit(BUZZER* bzr,GPIO_TypeDef* GPIOx,uint16_t GPIO_pin){
+	if(bzr == NULL){
+		return;
+	}
+
+	bzr->buzzerState = BUZZER_OFF;
+	bzr->GPIOx = GPIOx;
+	bzr->GPIO_pin = GPIO_pin;
+}
+void buzzerOn(BUZZER* bzr){
+	bzr->buzzerState = BUZZER_ON;
+	HAL_TIM_Base_Start(&htim3);
+	HAL_TIM_PWM_Start_IT(&htim3, TIM_CHANNEL_1);
+
+}
+void buzzerOff(BUZZER* bzr){
+	bzr->buzzerState = BUZZER_OFF;
+	HAL_TIM_Base_Stop(&htim3);
+	HAL_TIM_PWM_Stop_IT(&htim3, TIM_CHANNEL_1);
+}
+
+

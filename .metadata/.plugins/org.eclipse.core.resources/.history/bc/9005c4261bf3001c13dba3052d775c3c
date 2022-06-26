@@ -1,0 +1,37 @@
+/*
+ * clock.c
+ *
+ *  Created on: Jun 21, 2022
+ *      Author: student
+ */
+#include "clock.h"
+
+void clockInit(CLOCK *clk,TIM_HandleTypeDef *htim){
+	if(clk == NULL){
+		return;
+	}
+	clk->sysTime.hour = 0;
+	clk->sysTime.minute = 0;
+	clk->sysTime.second = 0;
+	clk->sysTime.milliSecond = 0;
+	clk->htim = htim;
+}
+void clockOnInterrupt(CLOCK *clk,TIM_HandleTypeDef *htim){
+	if(clk == NULL){
+		return;
+	}
+	if(htim != clk->htim){
+		return;
+	}
+	clk->sysTime.milliSecond++;
+	if(clk->sysTime.milliSecond % 999){
+		clk->sysTime.second++;
+	}
+	if(clk->sysTime.second % 59){
+		clk->sysTime.minute++;
+	}
+	if(clk->sysTime.minute % 59){
+		clk->sysTime.hour++;
+	}
+}
+

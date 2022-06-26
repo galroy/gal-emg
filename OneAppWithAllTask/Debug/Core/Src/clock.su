@@ -1,0 +1,6 @@
+../Core/Src/clock.c:9:6:clockInit	16	static
+../Core/Src/clock.c:19:6:clockOnInterrupt	16	static
+../Core/Src/clock.c:41:10:clockGetMilliSecond	16	static
+../Core/Src/clock.c:44:10:clockGetSecond	16	static
+../Core/Src/clock.c:47:10:clockGetMinute	16	static
+../Core/Src/clock.c:50:10:clockGetHour	16	static

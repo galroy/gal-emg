@@ -1,0 +1,105 @@
+/*
+ * MyMain.c
+ *
+ *  Created on: Jun 21, 2022
+ *      Author: student
+ */
+#include "MyMain.h"
+#include "LedControl.h"
+#include "buzzer.h"
+
+extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim6;
+
+LED ledR;
+LED ledB;
+BUZZER bzr;
+GPIO_PinState pinState;
+
+/*
+ GPIO_PIN_RESET = 0U,
+  GPIO_PIN_SET
+ */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	/*static int b = 0;
+		if(b<=10)
+		{
+			setBrightness(&ledR, b);
+			b++;
+		}
+		else{
+			b=0;
+		}*/
+
+	pinState = HAL_GPIO_ReadPin(B2_GPIO_Port, B2_Pin);
+	//static int c = 0;
+	//if(c == 0){
+	if(pinState == GPIO_PIN_RESET){
+		ledOff(&ledB);
+		ledOff(&ledR);
+		//buzzerOn(&bzr);
+		HAL_TIM_Base_Stop_IT(&htim6);
+		buzzerOff(&bzr);
+
+
+		//c=1;
+	}else{
+		ledOn(&ledB);
+		ledOn(&ledR);
+
+		uint8_t tmp;
+		tmp = GetTav(262);
+		buzzerOn(&bzr);
+		buzzerOnFreq(&bzr,tmp);
+		HAL_TIM_Base_Start_IT(&htim6);
+
+		//c=0;
+	}
+
+
+}
+
+//start
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	//ledOn(&ledB);
+	//ledOn(&ledR);
+	//static int i = 0;
+		if(htim == &htim6){
+			//buzzerOnFreq(&bzr,GetTav(freqArr[i]));
+			buzzerOnFreq(&bzr,390);
+			//__HAL_TIM_SET_AUTORELOAD(&htim6,ton[i]);
+		//	i++;
+			//if(i>=12){
+				//i=0;			}
+		}
+}
+//end cicale
+/*void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
+	ledOff(&ledB);
+}*/
+
+
+
+
+  //HAL_TIM_Base_Init(&htim4);
+  //HAL_TIM_Base_Start_IT(&htim4);
+
+  //HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1);
+  //setBrightness(&ledB, 10);
+int mainLoop(){
+	HAL_TIM_Base_Init(&htim4);
+	HAL_TIM_Base_Start_IT(&htim4);
+
+	HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1);
+	//setBrightness(&ledB, 10);
+	buzzerInit(&bzr);
+	ledInit(&ledB,LD2_GPIO_Port,LD2_Pin);
+	ledInit(&ledR, LD3_GPIO_Port, LD3_Pin);
+	ledOn(&ledB);
+	ledOn(&ledR);
+	while(1){
+
+	}
+}
+
+

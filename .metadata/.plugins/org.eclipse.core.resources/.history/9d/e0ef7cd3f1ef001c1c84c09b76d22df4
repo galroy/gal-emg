@@ -1,0 +1,44 @@
+/*
+ * button.c
+ *
+ *  Created on: Jun 19, 2022
+ *      Author: student
+ */
+
+#include "button.h"
+//extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim3;
+void buzzerInit(BUZZER* bzr){
+	if(bzr == NULL){
+		return;
+	}
+	bzr->buzzerState = BUZZER_OFF;
+}
+void buzzerOn(BUZZER* bzr){
+	bzr->buzzerState = BUZZER_ON;
+	HAL_TIM_Base_Start(&htim3);
+	HAL_TIM_PWM_Start_IT(&htim3, TIM_CHANNEL_1);
+
+}
+void buzzerOff(BUZZER* bzr){
+	bzr->buzzerState = BUZZER_OFF;
+	HAL_TIM_Base_Stop(&htim3);
+	HAL_TIM_PWM_Stop_IT(&htim3, TIM_CHANNEL_1);
+}
+
+void buzzerOnFreq(BUZZER* bzr,uint8_t freq){
+	bzr->buzzerState = BUZZER_ON;
+	__HAL_TIM_SET_COUNTER(&htim3,0);
+	__HAL_TIM_SET_AUTORELOAD(&htim3,freq);
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, freq/2);
+	HAL_TIM_Base_Start(&htim3);
+	HAL_TIM_PWM_Start_IT(&htim3, TIM_CHANNEL_1);
+
+
+}
+
+uint8_t GetTav(uint8_t freq){
+	return (80000000)/(freq*800);
+}
+
+

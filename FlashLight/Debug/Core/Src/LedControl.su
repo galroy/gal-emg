@@ -1,0 +1,6 @@
+../Core/Src/LedControl.c:17:17:state	4	static
+../Core/Src/LedControl.c:36:6:ledON	16	static
+../Core/Src/LedControl.c:41:6:ledOFF	16	static
+../Core/Src/LedControl.c:46:6:ledWeak	16	static
+../Core/Src/LedControl.c:51:6:ledFlickering	16	static
+../Core/Src/LedControl.c:57:6:setBrightness	16	static

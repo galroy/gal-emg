@@ -1,0 +1,6 @@
+../Core/Src/RingBuffer_ADT.c:11:8:RingBuffer_Init	16	static
+../Core/Src/RingBuffer_ADT.c:24:5:RingBuffer_IsEmpty	16	static
+../Core/Src/RingBuffer_ADT.c:31:5:RingBuffer_IsFull	16	static
+../Core/Src/RingBuffer_ADT.c:38:5:RingBuffer_FreeSpace	24	static
+../Core/Src/RingBuffer_ADT.c:53:8:RingBuffer_Write	24	static
+../Core/Src/RingBuffer_ADT.c:75:5:RingBuffer_Read	32	static

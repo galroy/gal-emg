@@ -1,0 +1,18 @@
+/*
+ * MyMain.c
+ *
+ *  Created on: Jun 21, 2022
+ *      Author: student
+ */
+#include "MyMain.h"
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+
+}
+int mainLoop(){
+
+	while(1){
+
+	}
+}
+
+
