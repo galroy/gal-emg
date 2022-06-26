@@ -1,111 +1,81 @@
-20:44:57 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
+20:33:32 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/MyMain.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/MyMain.d" -MT"Core/Src/MyMain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/MyMain.o"
+arm-none-eabi-gcc "../Core/Src/button.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/button.d" -MT"Core/Src/button.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/button.o"
 ../Core/Src/MyMain.c: In function 'mainLoop':
-../Core/Src/MyMain.c:114:4: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
-  114 |    printf("btn stat = %d\n\r",getButtonState(&btnSW2));
-      |    ^~~~~~
-../Core/Src/MyMain.c:114:4: warning: incompatible implicit declaration of built-in function 'printf'
+../Core/Src/MyMain.c:115:5: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+  115 |     printf("btn stat = %d\n\r",getButtonState(&btnSW2));
+      |     ^~~~~~
+../Core/Src/MyMain.c:115:5: warning: incompatible implicit declaration of built-in function 'printf'
 ../Core/Src/MyMain.c:12:1: note: include '<stdio.h>' or provide a declaration of 'printf'
    11 | #include "clock.h"
   +++ |+#include <stdio.h>
    12 | 
-../Core/Src/MyMain.c:121:4: warning: incompatible implicit declaration of built-in function 'printf'
-  121 |    printf("btn stat = %d\n\r",getButtonState(&btnSW2));
+../Core/Src/MyMain.c:122:5: warning: incompatible implicit declaration of built-in function 'printf'
+  122 |     printf("btn stat = %d\n\r",getButtonState(&btnSW2));
+      |     ^~~~~~
+../Core/Src/MyMain.c:122:5: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/MyMain.c:127:5: warning: incompatible implicit declaration of built-in function 'printf'
+  127 |     printf("btn stat = %d\n\r",getButtonState(&btnSW2));
+      |     ^~~~~~
+../Core/Src/MyMain.c:127:5: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/MyMain.c:134:4: warning: incompatible implicit declaration of built-in function 'printf'
+  134 |    printf("sec=%d\n\r",clocksec);
       |    ^~~~~~
-../Core/Src/MyMain.c:121:4: note: include '<stdio.h>' or provide a declaration of 'printf'
-../Core/Src/MyMain.c:128:4: warning: incompatible implicit declaration of built-in function 'printf'
-  128 |    printf("sec=%d\n\r",clocksec);
+../Core/Src/MyMain.c:134:4: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/MyMain.c:138:4: warning: incompatible implicit declaration of built-in function 'printf'
+  138 |    printf("min=%d\n\r",clockmin);
       |    ^~~~~~
-../Core/Src/MyMain.c:128:4: note: include '<stdio.h>' or provide a declaration of 'printf'
-../Core/Src/MyMain.c:132:4: warning: incompatible implicit declaration of built-in function 'printf'
-  132 |    printf("min=%d\n\r",clockmin);
-      |    ^~~~~~
-../Core/Src/MyMain.c:132:4: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/MyMain.c:138:4: note: include '<stdio.h>' or provide a declaration of 'printf'
 arm-none-eabi-gcc -o "OneAppWithAllTask.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\OneAppWithAllTask\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="OneAppWithAllTask.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: OneAppWithAllTask.elf
  
 arm-none-eabi-size   OneAppWithAllTask.elf 
 arm-none-eabi-objdump -h -S  OneAppWithAllTask.elf  > "OneAppWithAllTask.list"
    text	   data	    bss	    dec	    hex	filename
-  23756	    120	   2008	  25884	   651c	OneAppWithAllTask.elf
+  23920	    120	   2016	  26056	   65c8	OneAppWithAllTask.elf
 Finished building: default.size.stdout
  
 Finished building: OneAppWithAllTask.list
  
-20:45:04 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
+20:33:39 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
 make -j12 all 
 arm-none-eabi-size   OneAppWithAllTask.elf 
    text	   data	    bss	    dec	    hex	filename
-  23756	    120	   2008	  25884	   651c	OneAppWithAllTask.elf
+  23920	    120	   2016	  26056	   65c8	OneAppWithAllTask.elf
 Finished building: default.size.stdout
  
-20:46:36 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
+20:35:20 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/clock.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/clock.d" -MT"Core/Src/clock.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/clock.o"
+arm-none-eabi-gcc "../Core/Src/button.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/button.d" -MT"Core/Src/button.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/button.o"
 arm-none-eabi-gcc -o "OneAppWithAllTask.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\OneAppWithAllTask\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="OneAppWithAllTask.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: OneAppWithAllTask.elf
  
 arm-none-eabi-size   OneAppWithAllTask.elf 
 arm-none-eabi-objdump -h -S  OneAppWithAllTask.elf  > "OneAppWithAllTask.list"
    text	   data	    bss	    dec	    hex	filename
-  23748	    120	   2008	  25876	   6514	OneAppWithAllTask.elf
-Finished building: default.size.stdout
- 
-Finished building: OneAppWithAllTask.list
- 
-20:48:07 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/clock.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/clock.d" -MT"Core/Src/clock.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/clock.o"
-arm-none-eabi-gcc -o "OneAppWithAllTask.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\OneAppWithAllTask\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="OneAppWithAllTask.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: OneAppWithAllTask.elf
- 
-arm-none-eabi-size   OneAppWithAllTask.elf 
-arm-none-eabi-objdump -h -S  OneAppWithAllTask.elf  > "OneAppWithAllTask.list"
-   text	   data	    bss	    dec	    hex	filename
-  23756	    120	   2008	  25884	   651c	OneAppWithAllTask.elf
+  23920	    120	   2016	  26056	   65c8	OneAppWithAllTask.elf
 Finished building: default.size.stdout
  
 Finished building: OneAppWithAllTask.list
  
-20:52:40 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
+20:36:37 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/clock.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/clock.d" -MT"Core/Src/clock.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/clock.o"
-arm-none-eabi-gcc -o "OneAppWithAllTask.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\OneAppWithAllTask\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="OneAppWithAllTask.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: OneAppWithAllTask.elf
- 
 arm-none-eabi-size   OneAppWithAllTask.elf 
-arm-none-eabi-objdump -h -S  OneAppWithAllTask.elf  > "OneAppWithAllTask.list"
    text	   data	    bss	    dec	    hex	filename
-  23768	    120	   2008	  25896	   6528	OneAppWithAllTask.elf
+  23920	    120	   2016	  26056	   65c8	OneAppWithAllTask.elf
 Finished building: default.size.stdout
  
-Finished building: OneAppWithAllTask.list
- 
-20:57:41 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
+20:38:55 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
 make -j12 all 
-arm-none-eabi-gcc "../Core/Src/clock.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/clock.d" -MT"Core/Src/clock.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/clock.o"
+arm-none-eabi-gcc "../Core/Src/button.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/button.d" -MT"Core/Src/button.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/button.o"
 arm-none-eabi-gcc -o "OneAppWithAllTask.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\OneAppWithAllTask\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="OneAppWithAllTask.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: OneAppWithAllTask.elf
  
 arm-none-eabi-size   OneAppWithAllTask.elf 
 arm-none-eabi-objdump -h -S  OneAppWithAllTask.elf  > "OneAppWithAllTask.list"
    text	   data	    bss	    dec	    hex	filename
-  23756	    120	   2008	  25884	   651c	OneAppWithAllTask.elf
-Finished building: default.size.stdout
- 
-Finished building: OneAppWithAllTask.list
- 
-17:06:15 **** Incremental Build of configuration Debug for project OneAppWithAllTask ****
-make -j12 all 
-arm-none-eabi-gcc "../Core/Src/clock.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/clock.d" -MT"Core/Src/clock.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/clock.o"
-arm-none-eabi-gcc -o "OneAppWithAllTask.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\OneAppWithAllTask\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="OneAppWithAllTask.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: OneAppWithAllTask.elf
- 
-arm-none-eabi-size   OneAppWithAllTask.elf 
-arm-none-eabi-objdump -h -S  OneAppWithAllTask.elf  > "OneAppWithAllTask.list"
-   text	   data	    bss	    dec	    hex	filename
-  23744	    120	   2008	  25872	   6510	OneAppWithAllTask.elf
+  23928	    120	   2016	  26064	   65d0	OneAppWithAllTask.elf
 Finished building: default.size.stdout
  
 Finished building: OneAppWithAllTask.list

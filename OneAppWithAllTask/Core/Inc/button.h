@@ -12,7 +12,7 @@
 
 typedef enum buttontate_{
 	BUTTON_STATE_NONE,
-	BUTTON_STATE_PRESS,
+	BUTTON_STATE_SHORT_PRESS,
 	BUTTON_STATE_LONG_PRESS,
 	BUTTON_STATE_DOUBLE_PRESS
 } BUTTON_STATE;
@@ -30,12 +30,17 @@ typedef struct _button{
 	uint16_t GPIO_Pin;
 	ButtonName btnName;
 	uint32_t pressTime;
+	uint32_t doublePressCounter;
+
+
 } BUTTON;
 
 void buttonInit(BUTTON *btn,ButtonName btnName, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 BUTTON_STATE getButtonState(BUTTON *btn);
 void SetButtonNone(BUTTON *btn);
 void buttonOnInterrupt(BUTTON *btn, uint16_t pin);
+void buttonDoublePressCountdown(BUTTON *btn);
+
 
 
 #endif /* SRC_BUTTON_H_ */

@@ -108,19 +108,25 @@ int mainLoop(){
 	//ledOn(&ledB);
 	//ledOn(&ledR);
 	while(1){
-		if(getButtonState(&btnSW2) == BUTTON_STATE_LONG_PRESS){
-			ledOn(&ledB);
+		if(getButtonState(&btnSW2) != BUTTON_STATE_NONE){
+			if(getButtonState(&btnSW2) == BUTTON_STATE_LONG_PRESS){
+				ledOn(&ledB);
 
-			printf("btn stat = %d\n\r",getButtonState(&btnSW2));
-			SetButtonNone(&btnSW2);
+				printf("btn stat = %d\n\r",getButtonState(&btnSW2));
+				SetButtonNone(&btnSW2);
 			//btnSW2->buttonState = BUTTON_STATE_NONE;
-		}
+			}
 
-		if(getButtonState(&btnSW2) == BUTTON_STATE_PRESS){
-			ledOff(&ledB);
-			printf("btn stat = %d\n\r",getButtonState(&btnSW2));
-			SetButtonNone(&btnSW2);
+			if(getButtonState(&btnSW2) == BUTTON_STATE_SHORT_PRESS){
+				ledOff(&ledB);
+				printf("btn stat = %d\n\r",getButtonState(&btnSW2));
+				SetButtonNone(&btnSW2);
 				//	btnSW2->buttonState = BUTTON_STATE_NONE;
+			}
+			if(getButtonState(&btnSW2) == BUTTON_STATE_DOUBLE_PRESS){
+				printf("btn stat = %d\n\r",getButtonState(&btnSW2));
+				SetButtonNone(&btnSW2);
+			}
 		}
 		clocksec = clockGetSecond(&mainClock);
 		clockmin = clockGetMinute(&mainClock);
