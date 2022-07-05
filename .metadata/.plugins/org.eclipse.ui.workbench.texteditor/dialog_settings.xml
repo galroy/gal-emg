@@ -9,6 +9,9 @@
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
 			<item value="huart2"/>
+			<item value="htim6"/>
+			<item value="adc2"/>
+			<item value="A0"/>
 			<item value="ledR"/>
 			<item value="__HAL_TIM_SET_AUTORELOAD"/>
 			<item value="_it("/>
@@ -20,9 +23,6 @@
 			<item value="B1_GPIO_Port"/>
 			<item value="__HAL_TIM_SET_COUNTER"/>
 			<item value="ledOnTimerInterrupt"/>
-			<item value="HAL_TIM_Base_Start"/>
-			<item value="HAL_GPIO_ReadPin"/>
-			<item value="uint8_t"/>
 		</list>
 		<list key="replacehistory">
 		</list>
@@ -32,6 +32,6 @@
 		<item key="DIALOG_Y_ORIGIN" value="407"/>
 		<item key="DIALOG_WIDTH" value="322"/>
 		<item key="DIALOG_HEIGHT" value="391"/>
-		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 	</section>
 </section>

@@ -68,6 +68,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 
 	}*/
 	clockOnInterrupt(&mainClock,htim);
+	if(htim == &htim6){
+		countdown(&btnSW2);
+	}
+
 }
 //end cicale
 /*void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
@@ -104,38 +108,50 @@ int mainLoop(){
 	buzzerInit(&bzr);
 	ledInit(&ledB,LD2_GPIO_Port,LD2_Pin);
 	ledInit(&ledR, LD3_GPIO_Port, LD3_Pin);
-
+	BUTTON_STATE btnState = BUTTON_STATE_NONE;
 	//ledOn(&ledB);
 	//ledOn(&ledR);
 	while(1){
-		if(getButtonState(&btnSW2) != BUTTON_STATE_NONE){
-			if(getButtonState(&btnSW2) == BUTTON_STATE_LONG_PRESS){
-				ledOn(&ledB);
 
-				printf("btn stat = %d\n\r",getButtonState(&btnSW2));
-				SetButtonNone(&btnSW2);
-			//btnSW2->buttonState = BUTTON_STATE_NONE;
-			}
 
-			if(getButtonState(&btnSW2) == BUTTON_STATE_SHORT_PRESS){
-				ledOff(&ledB);
-				printf("btn stat = %d\n\r",getButtonState(&btnSW2));
-				SetButtonNone(&btnSW2);
-				//	btnSW2->buttonState = BUTTON_STATE_NONE;
-			}
-			if(getButtonState(&btnSW2) == BUTTON_STATE_DOUBLE_PRESS){
-				printf("btn stat = %d\n\r",getButtonState(&btnSW2));
-				SetButtonNone(&btnSW2);
-			}
+		btnState = getButtonState(&btnSW2);
+		switch(btnState){
+		case BUTTON_STATE_LONG_PRESS:
+			ledOn(&ledB);
+			printf("btn state = %u\n\r",btnState);
+			SetButtonNone(&btnSW2);
+			break;
+		case BUTTON_STATE_SHORT_PRESS:
+			ledOff(&ledB);
+			ledOff(&ledR);//start red
+			printf("btn state = %u\n\r",btnState);
+			SetButtonNone(&btnSW2);
+			break;
+		case BUTTON_STATE_DOUBLE_PRESS:
+			ledOn(&ledR);
+			printf("btn state = %u\n\r",btnState);
+			SetButtonNone(&btnSW2);
+			break;
+		case BUTTON_STATE_WAIT_FOR_DOUBLE_CLICK:
+		case BUTTON_STATE_NONE:
+			break;
+		default:
+			printf("Unexpected \n\r");
+			break;
+
+
 		}
+
+
+
 		clocksec = clockGetSecond(&mainClock);
 		clockmin = clockGetMinute(&mainClock);
 		if(sec != clocksec){
-			printf("sec=%d\n\r",clocksec);
+			printf("sec=%u\n\r",clocksec);
 			sec = clocksec;
 		}
 		if(min != clockmin){
-			printf("min=%d\n\r",clockmin);
+			printf("min=%u\n\r",clockmin);
 			min = clockmin;
 		}
 
