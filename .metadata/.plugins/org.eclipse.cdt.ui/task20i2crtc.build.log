@@ -1,0 +1,119 @@
+18:49:02 **** Incremental Build of configuration Debug for project task20i2crtc ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/DateTime.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/DateTime.d" -MT"Core/Src/DateTime.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/DateTime.o"
+../Core/Src/DateTime.c: In function 'printDateTime':
+../Core/Src/DateTime.c:67:4: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+   67 |    printf("year month date day hour min sec \n\r");
+      |    ^~~~~~
+../Core/Src/DateTime.c:67:4: warning: incompatible implicit declaration of built-in function 'printf'
+../Core/Src/DateTime.c:9:1: note: include '<stdio.h>' or provide a declaration of 'printf'
+    8 | #include <string.h>
+  +++ |+#include <stdio.h>
+    9 | 
+../Core/Src/DateTime.c: In function 'handleCommand':
+../Core/Src/DateTime.c:155:16: warning: implicit declaration of function 'sscanf' [-Wimplicit-function-declaration]
+  155 |   int params = sscanf((const char*)cmdbuffer, "%s %d %d %d %d %d %d", cmd,
+      |                ^~~~~~
+../Core/Src/DateTime.c:155:16: warning: incompatible implicit declaration of built-in function 'sscanf'
+../Core/Src/DateTime.c:155:16: note: include '<stdio.h>' or provide a declaration of 'sscanf'
+../Core/Src/DateTime.c:155:52: warning: format '%d' expects argument of type 'int *', but argument 4 has type 'uint8_t *' {aka 'unsigned char *'} [-Wformat=]
+  155 |   int params = sscanf((const char*)cmdbuffer, "%s %d %d %d %d %d %d", cmd,
+      |                                                   ~^
+      |                                                    |
+      |                                                    int *
+      |                                                   %hhd
+  156 |     &tm->year,&tm->month,&tm->date,&tm->hour,&tm->minute,&tm->second);
+      |     ~~~~~~~~~                                       
+      |     |
+      |     uint8_t * {aka unsigned char *}
+../Core/Src/DateTime.c:155:55: warning: format '%d' expects argument of type 'int *', but argument 5 has type 'uint8_t *' {aka 'unsigned char *'} [-Wformat=]
+  155 |   int params = sscanf((const char*)cmdbuffer, "%s %d %d %d %d %d %d", cmd,
+      |                                                      ~^
+      |                                                       |
+      |                                                       int *
+      |                                                      %hhd
+  156 |     &tm->year,&tm->month,&tm->date,&tm->hour,&tm->minute,&tm->second);
+      |               ~~~~~~~~~~                               
+      |               |
+      |               uint8_t * {aka unsigned char *}
+../Core/Src/DateTime.c:155:58: warning: format '%d' expects argument of type 'int *', but argument 6 has type 'uint8_t *' {aka 'unsigned char *'} [-Wformat=]
+  155 |   int params = sscanf((const char*)cmdbuffer, "%s %d %d %d %d %d %d", cmd,
+      |                                                         ~^
+      |                                                          |
+      |                                                          int *
+      |                                                         %hhd
+  156 |     &tm->year,&tm->month,&tm->date,&tm->hour,&tm->minute,&tm->second);
+      |                          ~~~~~~~~~                        
+      |                          |
+      |                          uint8_t * {aka unsigned char *}
+../Core/Src/DateTime.c:155:61: warning: format '%d' expects argument of type 'int *', but argument 7 has type 'uint8_t *' {aka 'unsigned char *'} [-Wformat=]
+  155 |   int params = sscanf((const char*)cmdbuffer, "%s %d %d %d %d %d %d", cmd,
+      |                                                            ~^
+      |                                                             |
+      |                                                             int *
+      |                                                            %hhd
+  156 |     &tm->year,&tm->month,&tm->date,&tm->hour,&tm->minute,&tm->second);
+      |                                    ~~~~~~~~~                 
+      |                                    |
+      |                                    uint8_t * {aka unsigned char *}
+../Core/Src/DateTime.c:155:64: warning: format '%d' expects argument of type 'int *', but argument 8 has type 'uint8_t *' {aka 'unsigned char *'} [-Wformat=]
+  155 |   int params = sscanf((const char*)cmdbuffer, "%s %d %d %d %d %d %d", cmd,
+      |                                                               ~^
+      |                                                                |
+      |                                                                int *
+      |                                                               %hhd
+  156 |     &tm->year,&tm->month,&tm->date,&tm->hour,&tm->minute,&tm->second);
+      |                                              ~~~~~~~~~~~        
+      |                                              |
+      |                                              uint8_t * {aka unsigned char *}
+../Core/Src/DateTime.c:155:67: warning: format '%d' expects argument of type 'int *', but argument 9 has type 'uint8_t *' {aka 'unsigned char *'} [-Wformat=]
+  155 |   int params = sscanf((const char*)cmdbuffer, "%s %d %d %d %d %d %d", cmd,
+      |                                                                  ~^
+      |                                                                   |
+      |                                                                   int *
+      |                                                                  %hhd
+  156 |     &tm->year,&tm->month,&tm->date,&tm->hour,&tm->minute,&tm->second);
+      |                                                          ~~~~~~~~~~~
+      |                                                          |
+      |                                                          uint8_t * {aka unsigned char *}
+../Core/Src/DateTime.c:184:4: warning: incompatible implicit declaration of built-in function 'printf'
+  184 |    printf("Invalid command\r\n");
+      |    ^~~~~~
+../Core/Src/DateTime.c:184:4: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/DateTime.c:153:35: warning: unused variable 'second' [-Wunused-variable]
+  153 |   int year,month,date,hour,minute,second;
+      |                                   ^~~~~~
+../Core/Src/DateTime.c:153:28: warning: unused variable 'minute' [-Wunused-variable]
+  153 |   int year,month,date,hour,minute,second;
+      |                            ^~~~~~
+../Core/Src/DateTime.c:153:23: warning: unused variable 'hour' [-Wunused-variable]
+  153 |   int year,month,date,hour,minute,second;
+      |                       ^~~~
+../Core/Src/DateTime.c:153:18: warning: unused variable 'date' [-Wunused-variable]
+  153 |   int year,month,date,hour,minute,second;
+      |                  ^~~~
+../Core/Src/DateTime.c:153:12: warning: unused variable 'month' [-Wunused-variable]
+  153 |   int year,month,date,hour,minute,second;
+      |            ^~~~~
+../Core/Src/DateTime.c:153:7: warning: unused variable 'year' [-Wunused-variable]
+  153 |   int year,month,date,hour,minute,second;
+      |       ^~~~
+../Core/Src/DateTime.c: In function 'led2On':
+../Core/Src/DateTime.c:192:2: warning: implicit declaration of function 'saveLedState' [-Wimplicit-function-declaration]
+  192 |  saveLedState(1);//ld2On
+      |  ^~~~~~~~~~~~
+arm-none-eabi-gcc -o "task20i2crtc.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\task20i2crtc\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="task20i2crtc.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+c:\st\stm32cubeide_1.9.0\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\tools\arm-none-eabi\bin\ld.exe: ./Core/Src/DateTime.o: in function `led2On':
+C:/Users/student/STM32CubeIDE/workspace_1.9.0/task20i2crtc/Debug/../Core/Src/DateTime.c:192: undefined reference to `saveLedState'
+c:\st\stm32cubeide_1.9.0\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\tools\arm-none-eabi\bin\ld.exe: ./Core/Src/DateTime.o: in function `led2Off':
+C:/Users/student/STM32CubeIDE/workspace_1.9.0/task20i2crtc/Debug/../Core/Src/DateTime.c:196: undefined reference to `saveLedState'
+c:\st\stm32cubeide_1.9.0\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\tools\arm-none-eabi\bin\ld.exe: ./Core/Src/DateTime.o: in function `led1On':
+C:/Users/student/STM32CubeIDE/workspace_1.9.0/task20i2crtc/Debug/../Core/Src/DateTime.c:201: undefined reference to `saveLedState'
+c:\st\stm32cubeide_1.9.0\stm32cubeide\plugins\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.10.3-2021.10.win32_1.0.0.202111181127\tools\arm-none-eabi\bin\ld.exe: ./Core/Src/DateTime.o: in function `led1Off':
+C:/Users/student/STM32CubeIDE/workspace_1.9.0/task20i2crtc/Debug/../Core/Src/DateTime.c:205: undefined reference to `saveLedState'
+collect2.exe: error: ld returned 1 exit status
+make: *** [makefile:64: task20i2crtc.elf] Error 1
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+
+18:49:03 Build Failed. 9 errors, 18 warnings. (took 1s.43ms)
+

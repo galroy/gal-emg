@@ -1,17 +1,30 @@
-21:06:05 **** Incremental Build of configuration Debug for project Task23 ****
+20:04:09 **** Incremental Build of configuration Debug for project Task23 ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/MyMain.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/MyMain.d" -MT"Core/Src/MyMain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/MyMain.o"
-../Core/Src/MyMain.c:17:10: error: #include expects "FILENAME" or <FILENAME>
-   17 | #include NUM_PASS_ERR 3
-      |          ^~~~~~~~~~~~
-../Core/Src/MyMain.c: In function 'handleCommand':
-../Core/Src/MyMain.c:143:42: error: 'NUM_PASS_ERR' undeclared (first use in this function)
-  143 |   if(passFromMem == param && passError < NUM_PASS_ERR){
-      |                                          ^~~~~~~~~~~~
-../Core/Src/MyMain.c:143:42: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/MyMain.c: In function 'mainLoop':
+../Core/Src/MyMain.c:279:20: error: expected ')' before '{' token
+  279 |  if(isSys5MinLock(){
+      |    ~               ^
+      |                    )
+../Core/Src/MyMain.c:290:1: error: expected expression before '}' token
+  290 | }
+      | ^
+../Core/Src/MyMain.c:290:1: warning: control reaches end of non-void function [-Wreturn-type]
+  290 | }
+      | ^
+At top level:
+../Core/Src/MyMain.c:176:13: warning: 'handleCommand' defined but not used [-Wunused-function]
+  176 | static void handleCommand()
+      |             ^~~~~~~~~~~~~
+../Core/Src/MyMain.c:106:12: warning: 'commTask' defined but not used [-Wunused-function]
+  106 | static int commTask()
+      |            ^~~~~~~~
+../Core/Src/MyMain.c:31:16: warning: 'sysLock' defined but not used [-Wunused-variable]
+   31 | static uint8_t sysLock = 0;
+      |                ^~~~~~~
 make: *** [Core/Src/subdir.mk:43: Core/Src/MyMain.o] Error 1
 "make -j12 all" terminated with exit code 2. Build might be incomplete.
-21:06:58 **** Incremental Build of configuration Debug for project Task23 ****
+20:04:40 **** Incremental Build of configuration Debug for project Task23 ****
 make -j12 all 
 arm-none-eabi-gcc "../Core/Src/MyMain.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/MyMain.d" -MT"Core/Src/MyMain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/MyMain.o"
 arm-none-eabi-gcc -o "Task23.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\Task23\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Task23.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -20,7 +33,70 @@ Finished building target: Task23.elf
 arm-none-eabi-size   Task23.elf 
 arm-none-eabi-objdump -h -S  Task23.elf  > "Task23.list"
    text	   data	    bss	    dec	    hex	filename
-  34100	    120	   2064	  36284	   8dbc	Task23.elf
+  34716	    120	   2072	  36908	   902c	Task23.elf
+Finished building: default.size.stdout
+ 
+Finished building: Task23.list
+ 
+20:07:26 **** Incremental Build of configuration Debug for project Task23 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/MyMain.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/MyMain.d" -MT"Core/Src/MyMain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/MyMain.o"
+arm-none-eabi-gcc -o "Task23.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\Task23\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Task23.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Task23.elf
+ 
+arm-none-eabi-size   Task23.elf 
+arm-none-eabi-objdump -h -S  Task23.elf  > "Task23.list"
+   text	   data	    bss	    dec	    hex	filename
+  34716	    120	   2072	  36908	   902c	Task23.elf
+Finished building: default.size.stdout
+ 
+Finished building: Task23.list
+ 
+20:15:47 **** Incremental Build of configuration Debug for project Task23 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/MyMain.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/MyMain.d" -MT"Core/Src/MyMain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/MyMain.o"
+arm-none-eabi-gcc -o "Task23.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\Task23\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Task23.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Task23.elf
+ 
+arm-none-eabi-size   Task23.elf 
+arm-none-eabi-objdump -h -S  Task23.elf  > "Task23.list"
+   text	   data	    bss	    dec	    hex	filename
+  34772	    120	   2072	  36964	   9064	Task23.elf
+Finished building: default.size.stdout
+ 
+Finished building: Task23.list
+ 
+20:18:04 **** Incremental Build of configuration Debug for project Task23 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/rtc.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/rtc.d" -MT"Core/Src/rtc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/rtc.o"
+arm-none-eabi-gcc -o "Task23.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\Task23\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Task23.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Task23.elf
+ 
+arm-none-eabi-size   Task23.elf 
+arm-none-eabi-objdump -h -S  Task23.elf  > "Task23.list"
+   text	   data	    bss	    dec	    hex	filename
+  34800	    120	   2072	  36992	   9080	Task23.elf
+Finished building: default.size.stdout
+ 
+Finished building: Task23.list
+ 
+20:18:48 **** Incremental Build of configuration Debug for project Task23 ****
+make -j12 all 
+arm-none-eabi-size   Task23.elf 
+   text	   data	    bss	    dec	    hex	filename
+  34800	    120	   2072	  36992	   9080	Task23.elf
+Finished building: default.size.stdout
+ 
+20:29:37 **** Incremental Build of configuration Debug for project Task23 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/rtc.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/rtc.d" -MT"Core/Src/rtc.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/rtc.o"
+arm-none-eabi-gcc -o "Task23.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\Task23\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Task23.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Task23.elf
+ 
+arm-none-eabi-size   Task23.elf 
+arm-none-eabi-objdump -h -S  Task23.elf  > "Task23.list"
+   text	   data	    bss	    dec	    hex	filename
+  34772	    120	   2072	  36964	   9064	Task23.elf
 Finished building: default.size.stdout
  
 Finished building: Task23.list

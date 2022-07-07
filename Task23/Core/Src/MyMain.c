@@ -15,6 +15,9 @@
 #define MAX_BUFFER_LENGTH 50
 #define MY_PASS 2042
 #define NUM_PASS_ERR 3
+#define NUM_PASS_5_MIN_ERR 3
+#define LOCK_30_SEC 5 //30
+#define NUM_5_MIN_IN_SEC 20//5*60=300
 
 extern UART_HandleTypeDef huart2;
 extern I2C_HandleTypeDef hi2c1;
@@ -24,6 +27,8 @@ extern TIM_HandleTypeDef htim6;
 Rtc rtc;
 Buzzer buzzer;
 static uint8_t passError = 0;
+static uint8_t passLock5min = 0;
+static uint8_t sysLock = 0;
 
 static uint8_t _cmdbuffer[MAX_BUFFER_LENGTH];
 static int _cmdcount = 0;
@@ -33,7 +38,15 @@ int _write(int fd, char* ptr, int len) {
     HAL_UART_Transmit(&huart2, (uint8_t *) ptr, len, HAL_MAX_DELAY);
     return len;
 }
-
+uint8_t isSys5MinLock(){
+	uint8_t timeToUnLock;
+	uint8_t ret = 1;
+	getTimeToUlock(&rtc,&timeToUnLock);
+	if(getSecFrom01_01_00(&rtc) - timeToUnLock <= 0){
+		ret = 0;
+	}
+	return ret;
+}
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	/*ledOnTimerInterrupt(&ledB);
@@ -45,29 +58,48 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	buzzerOnTimerInterrupt(&buzzer);
 	static uint32_t milsec = 0;
 	static uint32_t sec = 0;
-	if(htim == &htim6){
-	if(milsec%1000 == 0){
-		printf("timer6 %lu\n\r",sec);
-				//GetITCToR2C(1);
-				//printDateTime(&clk);
 
-				sec++;
-				if(sec == 30){
-					sec = 0;
-					passError = 0;
-					HAL_TIM_Base_Stop_IT(&htim6);
+	if (htim == &htim6) {
+		if (milsec % 1000 == 0) {
+			if (isSys5MinLock()) {
+				sysLock = 1;
+			} else {
+				sysLock = 0;
+			}
+			if (sysLock == 0) {
+
+				if (passError == NUM_PASS_ERR) {
+					sec++;
+					if (sec == LOCK_30_SEC) {
+						sec = 0;
+						passError = 0;
+
+						//HAL_TIM_Base_Stop_IT(&htim6);
+						printf("system unlock\n\r");
+					}
+
 				}
+			}
 		}
-			milsec++;
+		milsec++;
 
 	}
 }
 
 
-
+static int isCommTaskLock(){
+	uint8_t ret = 0;
+	if(passError >= NUM_PASS_ERR || passLock5min > NUM_PASS_5_MIN_ERR || sysLock == 1){
+		ret = 1;
+	}
+	return ret;
+}
 static int commTask()
 {
 	uint8_t ch;
+	if(isCommTaskLock() == 1){
+		return 0;
+	}
 
 	HAL_StatusTypeDef Status = HAL_UART_Receive(&huart2, &ch, 1, 10);
 	if (Status != HAL_OK)
@@ -124,6 +156,14 @@ static int commTask()
 	return 0;
 }
 
+static void LockSystem5Min(){
+	printf("Lock sys 5 min");
+	uint8_t curtimeSec;
+	curtimeSec = getSecFrom01_01_00(&rtc);
+	curtimeSec = curtimeSec + NUM_5_MIN_IN_SEC; //5 min
+	setTimeToUlock(&rtc,&curtimeSec);
+}
+
 static void handleCommand()
 {
 	char cmd[20];
@@ -143,19 +183,29 @@ static void handleCommand()
 		if(passFromMem == param && passError < NUM_PASS_ERR){
 			printf("password Ok\n\r");
 			passError = 0;
+			passLock5min = 0;
 			HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);
 			HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, 0);
 		}else{
-			if(passError < NUM_PASS_ERR){
+			if(passError <= NUM_PASS_ERR){
 				passError++;
 			}
 			printf("Invalid password try num %d\n\r",passError);
-			if(passError == 2){
-				HAL_TIM_Base_Start_IT(&htim6);
+			if(passError >= NUM_PASS_ERR){
+				if(passLock5min <= NUM_PASS_5_MIN_ERR){
+					printf("passLock5min=%d\n\r",passLock5min);
+					passLock5min++;
+				}else{
+					LockSystem5Min();
+					printf("passLock5min=%d\n\r",passLock5min);
+				}
+
+				printf("system lock for 30 sec\n\r");
+				//HAL_TIM_Base_Start_IT(&htim6);
 			}
 			HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 0);
 			HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, 1);
-			buzzerPlayTone(&buzzer, 30);
+			buzzerPlayTone(&buzzer, 300);
 
 
 		}
@@ -212,11 +262,17 @@ static void handleCommand()
 int mainLoop(){
 
 	HAL_NVIC_EnableIRQ(TIM6_DAC_IRQn);
-	//HAL_TIM_Base_Start_IT(&htim6);
+	HAL_TIM_Base_Start_IT(&htim6);
 	HAL_NVIC_EnableIRQ(ADC1_2_IRQn);
 	initRTC(&rtc, &hi2c1);
 	buzzerInit(&buzzer, &htim3);
 	setPass(&rtc, MY_PASS);
+	if(isSys5MinLock()){
+		sysLock = 1;
+	}else{
+		sysLock = 0;
+	}
+	//SetClockTo01_01_00(&rtc);//one time
 
 	while(1){
 		if (commTask()) {

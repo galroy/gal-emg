@@ -1,0 +1,45 @@
+/*
+ * DateTime.c
+ *
+ *  Created on: Jun 30, 2022
+ *      Author: student
+ */
+#include "DateTime.h"
+
+void clockInit(CLOCK *clk,TIME *tm,I2C_HandleTypeDef *hi2c1){
+	if(clk == NULL){
+			return;
+	}
+	clk->time.year=tm->year;
+	clk->time.month=tm->month;
+	clk->time.day=tm->day;
+	clk->time.hour = tm->hour;
+	clk->time.minute = tm->minute;
+	clk->time.second = tm->second;
+	clk->time.milliSecond = tm->milliSecond;
+	clk->hi2c1 = hi2c1;
+}
+
+//left and right >0 and <15
+uint8_t setLeftRight8bitNum(uint8_t *lAndr,uint8_t  left, uint8_t  right) {
+    uint8_t ret = 1;
+    if (left > 15 || right > 15) {
+        ret = 0;
+    }
+    else {
+        *lAndr = left<<4;//move 4 bit left
+        *lAndr = *lAndr | right;
+    }
+    return ret;
+}
+
+uint8_t GetRight4BitNum(uint8_t num)
+{
+    return num & 0XF;
+}
+
+uint8_t GetLeft4BitNum(uint8_t num) {
+    return num >> 4;
+}
+
+

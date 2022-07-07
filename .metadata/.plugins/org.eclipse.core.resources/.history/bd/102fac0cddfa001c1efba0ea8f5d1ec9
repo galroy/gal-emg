@@ -1,0 +1,80 @@
+/*
+ * DateTime.c
+ *
+ *  Created on: Jun 30, 2022
+ *      Author: student
+ */
+#include "DateTime.h"
+
+void clockInit(CLOCK *clk,TIME *tm,I2C_HandleTypeDef *hi2c1){
+	if(clk == NULL){
+			return;
+	}
+	clk->time.year=tm->year;
+	clk->time.month=tm->month;
+	clk->time.date=tm->date;
+	clk->time.hour = tm->hour;
+	clk->time.minute = tm->minute;
+	clk->time.second = tm->second;
+	clk->time.milliSecond = tm->milliSecond;
+	clk->hi2c1 = hi2c1;
+}
+
+void I2CMemWrite(CLOCK *clk){
+	uint8_t arrData[] = {0,0,0,1,1,1,1};
+	HAL_I2C_Mem_Write(clk->hi2c1, 0XD0, 0, 1, arrData, 7, 0XFF);
+}
+
+void printDateTime(CLOCK *clk){
+	uint8_t readBuff[7];
+	TIME tm;
+	HAL_I2C_Mem_Read(clk->hi2c1, 0XD0, 0, 1, readBuff, 7, 0xff);
+	tm.second = (readBuff[0] & 15);
+	tm.seconds10 = (readBuff[0] >> 4);
+	tm.minute = (readBuff[1] & 15);
+	tm.minute10 = (readBuff[1] >>4);
+	tm.hour = (readBuff[2] & 15);
+	tm.hour10 = (readBuff[2] >> 4);
+	//clk->days = readBuff[3];
+	tm.date = (readBuff[4] & 15);
+	tm.date10 = (readBuff[4] >> 4);
+	tm.month = (readBuff[5] & 15);
+	tm.month10 = (readBuff[5] >> 4);
+	tm.year = (readBuff[5] & 15);
+	tm.year10 = (readBuff[5] >> 4);
+
+	  printf("year month date day hour min sec \n\r");
+	  printf("20%d%d:%d%d:%d%d:%d:%d%d:%d%d:%d%d \n\r" ,
+			  tm.year10, tm.year, tm.month10, tm.month,
+			  tm.date10, tm.date, /*clk->days*/0, tm.hour10, tm.hour,
+			  tm.minute10,
+			  tm.minute,
+			  tm.seconds10,
+			  tm.seconds);
+}
+
+//left and right >0 and <15
+uint8_t setLeftRight8bitNum(uint8_t *lAndr,uint8_t  left, uint8_t  right) {
+    uint8_t ret = 1;
+    if (left > 15 || right > 15) {
+        ret = 0;
+    }
+    else {
+        *lAndr = left<<4;//move 4 bit left
+        *lAndr = *lAndr | right;
+    }
+    return ret;
+}
+
+uint8_t GetRight4BitNum(uint8_t num)
+{
+    return num & 0XF;
+}
+
+uint8_t GetLeft4BitNum(uint8_t num) {
+    return num >> 4;
+}
+
+
+
+

@@ -1,0 +1,10 @@
+21:00:33 **** Incremental Build of configuration Debug for project task19-ADC ****
+make -j12 all 
+arm-none-eabi-size   task19-ADC.elf 
+   text	   data	    bss	    dec	    hex	filename
+  20488	     20	   1980	  22488	   57d8	task19-ADC.elf
+Finished building: default.size.stdout
+ 
+
+21:00:34 Build Finished. 0 errors, 0 warnings. (took 229ms)
+

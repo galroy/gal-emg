@@ -1,0 +1,31 @@
+/*
+ * rtc.c
+ *
+ *  Created on: Jul 5, 2022
+ *      Author: student
+ */
+#include "rtc.h"
+#define PASS_ADRR 8
+
+void initRTC(Rtc *rtc , I2C_HandleTypeDef* hi2c){
+
+	rtc->sec = 0;
+	rtc->min = 0;
+	rtc->hour = 0;
+	rtc->day = 0;
+	rtc->month = 0;
+	rtc->year = 0;
+	rtc->hi2c = hi2c;
+}
+
+int setPass(Rtc *rtc,uint32_t pass){
+	return HAL_I2C_Mem_Write(rtc->hi2c,0xD0,PASS_ADRR,1,(uint8_t *)&pass,sizeof(pass),0xFF);
+}
+int getPass(Rtc *rtc,uint32_t *pass){
+	return HAL_I2C_Mem_Read(rtc->hi2c, 0xD0, PASS_ADRR, 1, (uint8_t *)pass, sizeof(*pass),0xFF);
+}
+void SetClockTo01_01_00(Rtc *rtc){
+	uint8_t arrData[] = {0,0,0,1,1,1,0};
+	HAL_I2C_Mem_Write(rtc->hi2c, 0XD0, 0, 1, arrData, 7, 0XFF);
+
+}
