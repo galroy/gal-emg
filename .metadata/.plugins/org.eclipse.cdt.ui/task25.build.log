@@ -1,0 +1,29 @@
+20:54:12 **** Incremental Build of configuration Debug for project task25 ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/Led.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/Led.d" -MT"Core/Src/Led.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/Led.o"
+arm-none-eabi-gcc "../Core/Src/mymain.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/mymain.d" -MT"Core/Src/mymain.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/mymain.o"
+../Core/Src/Led.c: In function 'ledInit':
+../Core/Src/Led.c:14:2: error: 'ledon_ptr' undeclared (first use in this function)
+   14 |  ledon_ptr = ledOn1;
+      |  ^~~~~~~~~
+../Core/Src/Led.c:14:2: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/Led.c: In function 'ledOn1':
+../Core/Src/Led.c:17:2: error: 'led' undeclared (first use in this function); did you mean 'Led'?
+   17 |  led->state = STATE_ON;
+      |  ^~~
+      |  Led
+make: *** [Core/Src/subdir.mk:43: Core/Src/Led.o] Error 1
+make: *** Waiting for unfinished jobs....
+../Core/Src/mymain.c: In function 'handleCommand':
+../Core/Src/mymain.c:40:19: warning: implicit declaration of function 'commLastCommand' [-Wimplicit-function-declaration]
+   40 |  char * command = commLastCommand();
+      |                   ^~~~~~~~~~~~~~~
+../Core/Src/mymain.c:40:19: warning: initialization of 'char *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+../Core/Src/mymain.c: In function 'myMain':
+../Core/Src/mymain.c:93:7: warning: implicit declaration of function 'commTask' [-Wimplicit-function-declaration]
+   93 |   if (commTask()) {
+      |       ^~~~~~~~
+"make -j12 all" terminated with exit code 2. Build might be incomplete.
+
+20:54:12 Build Failed. 4 errors, 3 warnings. (took 539ms)
+

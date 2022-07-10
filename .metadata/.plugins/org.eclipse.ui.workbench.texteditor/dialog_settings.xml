@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="huart2"/>
+		<item key="selection" value="sysLock"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="sysLock"/>
+			<item value="passLock5min"/>
+			<item value="HAL_I2C_Mem_Write"/>
+			<item value="passError"/>
 			<item value="huart2"/>
 			<item value="htim6"/>
 			<item value="adc2"/>
@@ -19,10 +23,6 @@
 			<item value="main("/>
 			<item value="HAL_TIM_P"/>
 			<item value="SW2D3_Pin"/>
-			<item value="SW2D3"/>
-			<item value="B1_GPIO_Port"/>
-			<item value="__HAL_TIM_SET_COUNTER"/>
-			<item value="ledOnTimerInterrupt"/>
 		</list>
 		<list key="replacehistory">
 		</list>
