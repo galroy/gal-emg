@@ -1,0 +1,17 @@
+20:42:35 **** Incremental Build of configuration Debug for project All ****
+make -j12 all 
+arm-none-eabi-gcc "../Core/Src/Dht11.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L476xx -c -I../Core/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc -I../Drivers/STM32L4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/Dht11.d" -MT"Core/Src/Dht11.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/Dht11.o"
+arm-none-eabi-gcc -o "All.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\student\STM32CubeIDE\workspace_1.9.0\All\STM32L476RGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="All.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: All.elf
+ 
+arm-none-eabi-size   All.elf 
+arm-none-eabi-objdump -h -S  All.elf  > "All.list"
+   text	   data	    bss	    dec	    hex	filename
+  26308	    120	   2432	  28860	   70bc	All.elf
+Finished building: default.size.stdout
+ 
+Finished building: All.list
+ 
+
+20:42:36 Build Finished. 0 errors, 0 warnings. (took 984ms)
+

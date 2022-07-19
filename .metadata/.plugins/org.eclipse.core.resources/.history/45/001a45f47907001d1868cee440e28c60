@@ -1,0 +1,385 @@
+/*
+ * Dht11.c
+ *
+ *  Created on: Jul 18, 2022
+ *      Author: USER-PC
+ */
+
+#include "dht11.h"
+extern TIM_HandleTypeDef htim16;
+
+//uint8_t dht11Data[5] = { 0x00, 0x00, 0x00, 0x00, 0x00 };
+uint8_t dht11Data[5] = {0};
+
+static void delayUs(uint32_t delay) {
+	//HAL_TIM_Base_Start(&htim16);
+	__HAL_TIM_SET_COUNTER(&htim16,0);
+
+	while (__HAL_TIM_GET_COUNTER(&htim16) < delay)
+		;
+	// HAL_TIM_Base_Stop_IT(&htim16);
+
+}
+
+/*static void Delay_ms(uint32_t ms) {
+
+	uint16_t i = 0;
+	while (ms--) {
+
+		i = 4050;
+		while (i--)
+			;
+	};
+}
+static void Delay_us(uint32_t us) {
+
+	uint16_t i = 0;
+	while (us--) {
+
+		i = 2;
+		while (i--)
+			;
+	}
+}*/
+
+static void setPinOutput(Dht11 *dht) {
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+
+	GPIO_InitStruct.Pin = dht->pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(dht->port, &GPIO_InitStruct);
+
+
+
+
+}
+
+static void setPinInput(Dht11 *dht) {
+
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+	GPIO_InitStruct.Pin = dht->pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(dht->port, &GPIO_InitStruct);
+
+
+
+}
+
+/* uint8_t DHT_Read_Byte(void) For translation and collection DHT11
+  Send to IO The level signal of the port （8 position ）.
+   */
+static uint8_t DHT_Read_Byte(Dht11 *dht) // from DHT11 Read one bit （8 byte ） The signal
+{
+
+	uint8_t readData = 0; //ReadData To hold 8bit data , namely 8 A single read 1bit Combination of data
+	uint8_t temp;      // Temporarily store the signal level （0 or 1）
+	uint8_t retry = 0;   //retry Used to prevent jamming
+	uint8_t i;
+	// The primary temperature and humidity signal reads eight digits
+	for (i = 7; i >= 0; i--){
+		// Wait until DHT11 Output high level ： When PA5=1, Rising edge , Indicates the beginning of receiving data , Can be judged 0 or 1, Out of the loop , Perform subsequent judgment （ if PA5=0, Will wait in cycles ）
+		while(HAL_GPIO_ReadPin(dht->port, dht->pin) == 0 && retry < 100){
+
+			delayUs(1);
+			retry++;
+			//retry prevent PA5 Unable to read the data,
+			//the card is dead at this step ,
+			//When experience 100us after retry From to 100, Out of the loop .
+		}
+		retry = 0;
+
+		//delayUs(40);    // Time delay 30us
+		// According to the sequence diagram ,DHT Return the high-level signal to maintain 26us~28us Express 0,  maintain 70us Express 1
+		// Time delay 30us after , If IO Read that it is still high , Indicates that... Was collected 1; If IO Read low level , Indicates that... Was collected 0
+		// Read the level signal temp Inside , Then press in ReadData in
+		if (HAL_GPIO_ReadPin(dht->port, dht->pin) == 1)
+			temp = 1;
+		else
+			temp = 0;
+
+		// Wait until DHT11 Output low level , Exit .
+		//This round 1bit The signal is received .
+		while (HAL_GPIO_ReadPin(dht->port, dht->pin) == 1 && retry < 100){
+			delayUs(1);
+			retry++;
+		}
+		retry = 0;
+
+		//ReadData All internal signals are shifted to the
+		// left by one bit first , Leave space at the end
+		readData <<= i;
+		readData |= temp;        // take temp write in ReadData
+	}
+
+	return readData;
+}
+
+/* uint8_t DHT_Read(void) Express complete timing  */
+
+void DHT11Init(Dht11 *dht, GPIO_TypeDef *port, uint16_t pin) {
+	dht->port = port;
+	dht->pin = pin;
+	dht->humidity = 0.0;
+	dht->temparature = 0.0;
+	dht->state = DTH11_STATE_INIT;
+	HAL_TIM_Base_Start(&htim16);
+}
+static uint8_t getDHT11Status(Dht11 *dht)
+{
+	return HAL_GPIO_ReadPin(dht->port, dht->pin);
+}
+void DHT11Read(Dht11 *dht) {
+	uint8_t retry = 0;
+	uint8_t i = 0;
+
+
+
+	//IO Set to output mode . At the beginning of transmission ,
+	//MCU Want to DHT11 Sending signal
+	setPinOutput(dht);
+	//IO->DHT11: Pull low level first 18ms
+	//（ According to the timing requirements ）
+
+	HAL_GPIO_WritePin(dht->port, dht->pin, GPIO_PIN_RESET);
+	delayUs(18000);
+	//getDHT11Status()
+	//IO->DHT11: Then pull the high level 20us
+	HAL_GPIO_WritePin(dht->port, dht->pin, GPIO_PIN_SET);
+	delayUs(20);
+
+	//MCU adopt IO towards DHT11 Send request complete.
+	// Next DHT11 towards IO Send a response ,
+	//IO Switch to input mode.
+	//After that, start the translation and reading of the signal.
+	setPinInput(dht);
+	//delayUs(20);
+	//DHT11 Send back the low level response
+	//（ Read low level , explain DHT11 There is a response ）
+	//if(HAL_GPIO_ReadPin(dht->port, dht->pin) == 0){
+	retry = 0;
+	while(HAL_GPIO_ReadPin(dht->port, dht->pin) != 0 && retry < 100){
+		delayUs(1);
+		retry++;
+		// Next ,DHT11 Pull the low level for a period of time and then
+		// pull the high level for a period of time
+		retry = 0;
+		while (HAL_GPIO_ReadPin(dht->port, dht->pin) == 0 && retry < 100) {
+
+			delayUs(1);
+			retry++;
+		}
+		retry = 0;
+		while (HAL_GPIO_ReadPin(dht->port, dht->pin) == 1 && retry < 100) {
+
+			delayUs(1);
+			retry++;
+		}
+		retry = 0;
+
+		// A total of 40 position ,
+		// once DHT_Read_Byte return 8 position ,
+		// Read together 5 Time . Stored in dht11Data[] in.
+		//（dht11Data[] Defined as global ）
+		for (i = 0; i < 5; i++) {
+			// Read one byte at a time （8 position ）
+			dht11Data[i] = DHT_Read_Byte(dht);
+		}
+		//delayUs(50);
+		// explain ：Data[0] humidity , Data[2] temperature
+		//.Data[1] and Data[3] Respectively
+		//0 and 2 The decimal places of .dht11Data[4] Used to verify .
+	}
+	uint32_t sum = dht11Data[0] + dht11Data[1] + dht11Data[2] + dht11Data[3];  // check
+	if ((sum) == dht11Data[4]){
+		//return 1;
+		dht->state = DTH11_STATE_ERROR_CHECKSUM;
+	}
+	else{
+		dht->state = DTH11_STATE_SUCCESS;
+		//return DTH11_STATE_SUCCESS;
+	}
+	HAL_TIM_Base_Stop_IT(&htim16);
+}
+
+/*int DHT11Read(Dht11 *dht) {
+ ////////start
+ int ret = DTH11_STATE_SUCCESS;
+ setPinOutput(dht);
+ HAL_GPIO_WritePin(dht->port, dht->pin, 0);   // pull the pin low
+ delayUs(18000);   // wait for 18ms
+ setPinInput(dht);   // set as input
+
+ ////////response
+
+ delayUs(40);
+ if (!HAL_GPIO_ReadPin(dht->port, dht->pin))  // if the pin is low
+ {
+ delayUs(80);  // wait for 80us
+ if (HAL_GPIO_ReadPin(dht->port, dht->pin)) {
+ //check = 1;  // now if the pin is high response = ok i.e
+ ret = DTH11_STATE_SUCCESS;
+ }
+ else{
+ ret = DTH11_STATE_ERROR;
+ return ret;
+ }
+ while(HAL_GPIO_ReadPin (dht->port, dht->pin));   // wait for the pin to go low
+ }
+ ////Read Data
+ delayUs(40);  // wait for 80us
+
+
+ return ret;
+ }*/
+
+/*int DHT11_Init(struct DHT11_Dev* dev,TIM_TypeDef *TIMx, GPIO_TypeDef* port, uint16_t pin) {
+
+ GPIO_InitTypeDef GPIO_InitStructure;
+
+ dev->port = port;
+ dev->pin = pin;
+
+ __HAL_RCC_TIM16_CLK_ENABLE();
+
+
+
+ //Initialize TIMER
+ TIM_ClockConfigTypeDef sClockSourceConfig;
+ TIM_MasterConfigTypeDef sMasterConfig;
+
+
+ ustim.Instance = TIMx;
+ ustim.Init.Prescaler = 84;
+ ustim.Init.CounterMode = TIM_COUNTERMODE_UP;
+ ustim.Init.Period = 84000000-1;
+ ustim.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+ ustim.Init.AutoReloadPreload=TIM_AUTORELOAD_PRELOAD_DISABLE;
+ //ustim = htim16;
+ if (HAL_TIM_Base_Init(&ustim) != HAL_OK)
+ {
+ // _Error_Handler(__FILE__, __LINE__);
+ return 1;
+ }
+ sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+ if (HAL_TIM_ConfigClockSource(&ustim, &sClockSourceConfig) != HAL_OK)
+ {
+ // _Error_Handler(__FILE__, __LINE__);
+ return 1;
+ }
+ sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+ sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+ if (HAL_TIMEx_MasterConfigSynchronization(&ustim, &sMasterConfig) != HAL_OK)
+ {
+ // _Error_Handler(__FILE__, __LINE__);
+ return 1;
+ }
+ HAL_TIM_Base_Start(&ustim);
+
+ //Initialize GPIO DHT11
+ GPIO_InitStructure.Pin = dev->pin;
+ GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+ GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_LOW;
+ HAL_GPIO_Init(dev->port, &GPIO_InitStructure);
+
+ return 0;
+ }*/
+
+/*
+
+ int DHT11_Read_(struct DHT11_Dev* dev) {
+
+ //Initialization
+ uint8_t i, j, temp;
+ uint8_t data[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
+ GPIO_InitTypeDef GPIO_InitStructure;
+
+ //Generate START condition
+ //o
+ GPIO_InitStructure.Pin = dev->pin;
+ GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+ GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_LOW;
+ HAL_GPIO_Init(dev->port, &GPIO_InitStructure);
+
+ //dev->port->MODER |= GPIO_MODER_MODER6_0;
+
+ //Put LOW for at least 18ms
+ HAL_GPIO_WritePin(dev->port, dev->pin, GPIO_PIN_RESET);
+
+
+ //wait 18ms
+
+
+ ustim.Instance->CNT=0;
+ while((ustim.Instance->CNT) <= 18000);
+
+ //Put HIGH for 20-40us
+ HAL_GPIO_WritePin(dev->port, dev->pin, GPIO_PIN_SET);
+
+ //wait 40us
+ ustim.Instance->CNT=0;
+ while((ustim.Instance->CNT) <= 40);
+ //End start condition
+
+ //io();
+ //Input mode to receive data
+ GPIO_InitStructure.Mode = GPIO_MODE_INPUT;
+ HAL_GPIO_Init(dev->port, &GPIO_InitStructure);
+
+ //DHT11 ACK
+ //should be LOW for at least 80us
+ //while(!GPIO_ReadInputDataBit(dev->port, dev->pin));
+ ustim.Instance->CNT=0;
+ while(!HAL_GPIO_ReadPin(dev->port, dev->pin)) {
+ if(ustim.Instance->CNT > 100)
+ return DHT11_ERROR_TIMEOUT;
+ }
+
+ //should be HIGH for at least 80us
+ //while(GPIO_ReadInputDataBit(dev->port, dev->pin));
+ ustim.Instance->CNT=0;
+ while(HAL_GPIO_ReadPin(dev->port, dev->pin)) {
+ if(ustim.Instance->CNT > 100)
+ return DHT11_ERROR_TIMEOUT;
+ }
+
+ //Read 40 bits (8*5)
+ for(j = 0; j < 5; ++j) {
+ for(i = 0; i < 8; ++i) {
+
+ //LOW for 50us
+ while(!HAL_GPIO_ReadPin(dev->port, dev->pin));
+
+
+ //Start counter
+ ustim.Instance->CNT=0;
+
+ //HIGH for 26-28us = 0 / 70us = 1
+ while(HAL_GPIO_ReadPin(dev->port, dev->pin));
+
+
+ //Calc amount of time passed
+ temp = ustim.Instance->CNT;
+
+ //shift 0
+ data[j] = data[j] << 1;
+
+ //if > 30us it's 1
+ if(temp > 40)
+ data[j] = data[j]+1;
+ }
+ }
+
+ //verify the Checksum
+ if(data[4] != (data[0] + data[2]))
+ return DHT11_ERROR_CHECKSUM;
+
+ //set data
+ dev->temparature = data[2];
+ dev->humidity = data[0];
+
+ return DHT11_SUCCESS;
+ }*/

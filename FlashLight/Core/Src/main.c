@@ -62,8 +62,8 @@ static void MX_TIM6_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-LED ledR;
-LED ledB;
+LED _ledRed;
+LED _ledBlue;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim){
 
 	//HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
@@ -82,8 +82,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef * htim){
 	} else{
 
 	}*/
-	ledOnTimerInterrupt(&ledR);
-	ledOnTimerInterrupt(&ledB);
+	ledOnTimerInterrupt(&_ledRed);
+	ledOnTimerInterrupt(&_ledBlue);
 
 }
 
@@ -311,11 +311,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
  // __HAL_TIM_SET_COUNTER(&htim6,0);
   HAL_TIM_Base_Start_IT(&htim6);
-  ledInit(&ledB,LD2_GPIO_Port,LD2_Pin);
-  ledInit(&ledR, LD3_GPIO_Port, LD3_Pin);
+  ledInit(&_ledBlue,LD2_GPIO_Port,LD2_Pin);
+  ledInit(&_ledRed, LD3_GPIO_Port, LD3_Pin);
   //ledOn(&ledB);
-  ledBlink(&ledR, 100);
-  ledBlink(&ledB, 500);
+  ledBlink(&_ledRed, 100);
+  ledBlink(&_ledBlue, 500);
   //ledOnTimerInterrupt(&ledR);
  // HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, 1);//start blue led
  // HAL_GPIO_WritePin(LD2_GPIO_Port, LD2A6_Pin, 1);//start red led

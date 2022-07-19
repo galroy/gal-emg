@@ -1,0 +1,31 @@
+/*
+ * cli.c
+ *
+ *  Created on: 12 Jul 2022
+ *      Author: student
+ */
+
+#include "main.h"
+#include "led.h"
+#include "cli.h"
+
+Led ledB;
+
+
+
+void cliInit(){
+
+	RegisterCommand("led","on","ledOn",&ledB);
+	RegisterCommand("led","off","ledOff",&ledB);
+
+}
+void cmdLed(void *obj,char *cmd){
+	if(strcmp(cmd, "on") == 0){
+		ledOn(obj);
+	}else if(strcmp(cmd, "off") == 0){
+		ledOff(obj);
+	}
+
+}
+
+

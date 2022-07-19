@@ -60,14 +60,14 @@ static void MX_TIM4_Init(void);
 /* USER CODE BEGIN 0 */
 
 
-LED ledR;
-LED ledB;
+LED _ledRed;
+LED _ledBlue;
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	static int b = 0;
 	if(b<=10)
 	{
-		setBrightness(&ledR, b);
+		setBrightness(&_ledRed, b);
 		b++;
 	}
 	else{
@@ -76,11 +76,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 }
 //start
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	ledOn(&ledB);
+	ledOn(&_ledBlue);
 }
 //end cicale
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
-	ledOff(&ledB);
+	ledOff(&_ledBlue);
 }
 
 /* USER CODE END 0 */
@@ -116,13 +116,13 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  ledInit(&ledB,LD2_GPIO_Port,LD2_Pin);
+  ledInit(&_ledBlue,LD2_GPIO_Port,LD2_Pin);
   HAL_NVIC_EnableIRQ(TIM4_IRQn);
   HAL_TIM_Base_Init(&htim4);
   HAL_TIM_Base_Start_IT(&htim4);
 
   HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_1);
-  setBrightness(&ledB, 10);
+  setBrightness(&_ledBlue, 10);
   //ledOn(&ledB);
  // ledInit(&ledR, LD3_GPIO_Port, LD3_Pin);
   /* USER CODE END 2 */

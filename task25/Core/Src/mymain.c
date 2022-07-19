@@ -3,7 +3,9 @@
  */
 
 #include "main.h"
+#include "CommTask.h"
 #include "Led.h"
+#include "cli.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -11,7 +13,9 @@
 extern TIM_HandleTypeDef htim6;
 
 
-Led ledB;
+Led _ledRed;
+//HandlerFunc handlOn;
+//HandlerFunc handlOff;
 /*extern I2C_HandleTypeDef hi2c1;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim6;
@@ -45,9 +49,24 @@ static void handleCommand()
 	{
 		return;
 	}
-	if(strcmp(cmd, "ledon") == 0){
-		ledOn(&ledB);
-	}else if (strcmp(cmd, "setcode") == 0 && params > 1)
+	if (strcmp(cmd, "ledon") == 0){
+		//ledOn(&ledB);
+		//ledB.ledon(&ledB);
+		//ledB.pledon(&ledB);
+		//staticLedOn;
+		//handlOn(&ledB);
+		//_on(&ledB);
+
+
+	}
+	else if(strcmp(cmd, "ledoff") == 0)
+	{
+		//ledOff(&ledB);
+		//staticLedOff;
+		//ledB.ledoff(&ledB);
+		//handlOff(&ledB);
+	}
+	else if (strcmp(cmd, "setcode") == 0 && params > 1)
 	{
 		//accessSetCode(code);
 	}
@@ -75,10 +94,19 @@ static void handleCommand()
 
 void myMain()
 {
-	HAL_NVIC_EnableIRQ(TIM6_DAC_IRQn);
-	HAL_TIM_Base_Start_IT(&htim6);
+	//HAL_NVIC_EnableIRQ(TIM6_DAC_IRQn);
+	//HAL_TIM_Base_Start_IT(&htim6);
 
-	ledInit(&ledB, LBLUE_GPIO_Port, LBLUE_Pin);
+	//ledInit(&ledB, LBLUE_GPIO_Port, LBLUE_Pin);
+	/*handlOn = ledOn;
+	handlOff = ledOff;
+	handlOn(&ledB);
+	handlOff(&ledB);*/
+	//RegisterCallbacks(handlOn,handlOff,&ledB);
+
+	//staticLedOn;
+	//staticLedOff;
+
 
 	/*ledInit(&ledB, LBLUE_GPIO_Port, LBLUE_Pin);
 	ledInit(&ledR, LRED_GPIO_Port, LRED_Pin);
@@ -89,6 +117,8 @@ void myMain()
 
 	accessInit();
 */
+	ledInit(&_ledRed, LRED_GPIO_Port, LRED_Pin);
+	cliInit();
 	while (1) {
 		if (commTask()) {
 			handleCommand();

@@ -18,8 +18,8 @@ extern UART_HandleTypeDef huart2;
 CLOCK mainClock;
 BUTTON btnSW1;
 BUTTON btnSW2;
-LED ledR;
-LED ledB;
+LED _ledRed;
+LED _ledBlue;
 BUZZER bzr;
 GPIO_PinState pinState;
 
@@ -106,8 +106,8 @@ int mainLoop(){
 	clockInit(&mainClock,&htim6);
 	buttonInit(&btnSW2,BTN_SW2,B2_GPIO_Port,B2_Pin);
 	buzzerInit(&bzr);
-	ledInit(&ledB,LD2_GPIO_Port,LD2_Pin);
-	ledInit(&ledR, LD3_GPIO_Port, LD3_Pin);
+	ledInit(&_ledBlue,LD2_GPIO_Port,LD2_Pin);
+	ledInit(&_ledRed, LD3_GPIO_Port, LD3_Pin);
 	BUTTON_STATE btnState = BUTTON_STATE_NONE;
 	//ledOn(&ledB);
 	//ledOn(&ledR);
@@ -117,18 +117,18 @@ int mainLoop(){
 		btnState = getButtonState(&btnSW2);
 		switch(btnState){
 		case BUTTON_STATE_LONG_PRESS:
-			ledOn(&ledB);
+			ledOn(&_ledBlue);
 			printf("btn state = %u\n\r",btnState);
 			SetButtonNone(&btnSW2);
 			break;
 		case BUTTON_STATE_SHORT_PRESS:
-			ledOff(&ledB);
-			ledOff(&ledR);//start red
+			ledOff(&_ledBlue);
+			ledOff(&_ledRed);//start red
 			printf("btn state = %u\n\r",btnState);
 			SetButtonNone(&btnSW2);
 			break;
 		case BUTTON_STATE_DOUBLE_PRESS:
-			ledOn(&ledR);
+			ledOn(&_ledRed);
 			printf("btn state = %u\n\r",btnState);
 			SetButtonNone(&btnSW2);
 			break;

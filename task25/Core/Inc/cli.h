@@ -1,0 +1,27 @@
+/*
+ * cli.h
+ *
+ *  Created on: 12 Jul 2022
+ *      Author: student
+ */
+
+#ifndef INC_CLI_H_
+#define INC_CLI_H_
+
+typedef void (*HandlerFunc)(void*);
+
+typedef struct comands_{
+	char *comand;
+	char *stat;
+	HandlerFunc hendler;
+	void *obj;
+}COMANDS;
+
+COMANDS cmds[100];
+
+
+void cmdLed(void *obj,char *cmd);
+
+void cliInit();
+
+#endif /* INC_CLI_H_ */

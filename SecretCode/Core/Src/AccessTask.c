@@ -21,8 +21,8 @@
 #define MEM_FAIL_TIME_ADDR  0x24
 
 
-extern Led ledB;
-extern Led ledR;
+extern Led _ledBlue;
+extern Led _ledRed;
 extern Buzzer buzzer;
 extern Rtc rtc;
 
@@ -55,7 +55,7 @@ void accessInit()
 		if (_hardFailTimeCount <= HARD_FAIL_LOCK_TIME_MS) {
 			// the system is still in lock
 
-			ledBlink(&ledR, 300);
+			ledBlink(&_ledRed, 300);
 			_isHardFail = 1;
 		}
 		else {
@@ -73,7 +73,7 @@ void accessOnTimerInterrupt()
 		if (_hardFailTimeCount > HARD_FAIL_LOCK_TIME_MS) {
 			// hard fail lock time up
 			_isHardFail = 0;
-			ledOff(&ledR);
+			ledOff(&_ledRed);
 
 			// reset hard lock count
 			_hardFailCount = 0;
@@ -99,7 +99,7 @@ void accessSetCode(char * code)
 
 static void accessGranted()
 {
-	ledOn(&ledB);
+	ledOn(&_ledBlue);
 	_softFailCount = 0;
 	_hardFailCount = 0;
 
@@ -121,7 +121,7 @@ static void accessDenied()
 	if (_hardFailCount >= MAX_HARD_FAILS) {
 		printf("Too many error tries. The system has been locked for 5 min\r\n");
 
-		ledBlink(&ledR, 300);
+		ledBlink(&_ledRed, 300);
 
 		uint32_t failTime = rtcGetSeconds(&rtc);
 		rtcWrite(&rtc, MEM_FAIL_TIME_ADDR, (uint8_t *)&failTime, sizeof(failTime));
@@ -141,7 +141,7 @@ void accessCheckCode(char * code)
 {
 	char savedCode[MAX_CODE_SIZE];
 
-	ledOff(&ledB);
+	ledOff(&_ledBlue);
 
 	if (_isHardFail) {
 		printf("The system is locked. Remaining lock time is %d sec\r\n",

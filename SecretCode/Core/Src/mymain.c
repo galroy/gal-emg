@@ -15,15 +15,15 @@ extern I2C_HandleTypeDef hi2c1;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim6;
 
-Led ledB;
-Led ledR;
+Led _ledBlue;
+Led _ledRed;
 Buzzer buzzer;
 Rtc rtc;
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	ledOnTimerInterrupt(&ledB);
-	ledOnTimerInterrupt(&ledR);
+	ledOnTimerInterrupt(&_ledBlue);
+	ledOnTimerInterrupt(&_ledRed);
 
 	buzzerOnTimerInterrupt(&buzzer);
 
@@ -75,8 +75,8 @@ void myMain()
 	HAL_NVIC_EnableIRQ(TIM6_DAC_IRQn);
 	HAL_TIM_Base_Start_IT(&htim6);
 
-	ledInit(&ledB, LBLUE_GPIO_Port, LBLUE_Pin);
-	ledInit(&ledR, LRED_GPIO_Port, LRED_Pin);
+	ledInit(&_ledBlue, LBLUE_GPIO_Port, LBLUE_Pin);
+	ledInit(&_ledRed, LRED_GPIO_Port, LRED_Pin);
 
 	buzzerInit(&buzzer, &htim3);
 

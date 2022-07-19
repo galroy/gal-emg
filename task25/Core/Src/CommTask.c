@@ -3,6 +3,7 @@
  */
 
 #include "main.h"
+#include "CommTask.h"
 #include <string.h>
 
 extern UART_HandleTypeDef huart2;
@@ -13,6 +14,10 @@ static uint8_t _cmdbuffer[MAX_BUFFER_LENGTH];
 static int _cmdcount = 0;
 static int _cmdprint = 0;
 
+/*static HandlerFunc _on;
+static HandlerFunc _off;
+static void *_obj;
+*/
 
 int _write(int fd, char* ptr, int len) {
     HAL_UART_Transmit(&huart2, (uint8_t *) ptr, len, HAL_MAX_DELAY);
@@ -82,3 +87,19 @@ char * commLastCommand()
 {
 	return (char *)_cmdbuffer;
 }
+
+void RegisterCommand(char *comand,char *stat,HandlerFunc hendler,void *obj){
+	static int i = 0;
+	cmds[i].comand = comand;
+	cmds[i].stat = stat;
+	cmds[i].obj = obj;
+	cmds[i].hendler = hendler;
+	i++;
+}
+
+/*void RegisterCallbacks(HandlerFunc onFunc, HandlerFunc offFunc, void *object ){
+	_on = onFunc;
+	_off = offFunc;
+	_obj = object;
+}*/
+
