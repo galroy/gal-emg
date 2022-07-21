@@ -1,0 +1,38 @@
+/*
+ * Dht11.h
+ *
+ *  Created on: Jul 18, 2022
+ *      Author: USER-PC
+ */
+
+#ifndef INC_DHT11_H_
+#define INC_DHT11_H_
+
+#include "main.h"
+
+typedef enum Dth11State_
+{
+	DTH11_STATE_INIT,
+	DTH11_STATE_SUCCESS,
+	DTH11_STATE_TIMEOUT,
+	DTH11_STATE_ERROR_CHECKSUM,
+	DTH11_STATE_ERROR,
+	DHT11_STATE_RETRAY_ERROR
+
+} Dth11State;
+
+
+
+typedef struct DHT11_ {
+	double temparature;
+	double humidity;
+	Dth11State state;
+	GPIO_TypeDef* port;
+	uint16_t pin;
+
+} Dht11;
+
+void DHT11Init(Dht11* dht, GPIO_TypeDef* port, uint16_t pin);
+void DHT11Read(Dht11* dht);
+
+#endif /* INC_DHT11_H_ */

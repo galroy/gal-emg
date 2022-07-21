@@ -60,6 +60,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t pin)
 {
 	buttonOnInterrupt(&_buttonSw1, pin);
 	buttonOnInterrupt(&_buttonSw2, pin);
+
+	//prinf("%u\r\n",pin);
+	Dht11_onGpioInterrupt(&_dht, pin);
 }
 
 
@@ -123,12 +126,13 @@ void myMain() {
 	 HAL_TIM_Base_Init(&htim6);
 	 HAL_TIM_Base_Start_IT(&htim6);
 
-
+	HAL_TIM_Base_Init(&htim16);
+	HAL_TIM_Base_Start(&htim16);
 
 	ledInit(&_ledBlue, LBLUE_GPIO_Port, LBLUE_Pin);
 	ledInit(&_ledRed, LRED_GPIO_Port, LRED_Pin);
 
-	DHT11Init(&_dht, DHT_GPIO_Port, DHT_Pin);
+	//DHT11Init(&_dht, DHT_GPIO_Port, DHT_Pin);
 
 	buttonInit(&_buttonSw1, SW1_GPIO_Port, SW1_Pin);
 	buttonInit(&_buttonSw2, SW2_GPIO_Port, SW2_Pin);
@@ -144,9 +148,17 @@ void myMain() {
 	//buttonInit(&button1, B2_GPIO_Port ,  B2_Pin);
 //	StateButon sw1State;
 	cliInit();
+	Dht11_init(&_dht);
+	//Dht11_Start(&_dht);
+	/*while(_dht.state != DHT11_STATE_SUCCESS){
+		Dht11_Start_Async(&_dht);
+	}
 
-	DHT11Read(&_dht);
-	printf("humidity = %d.%d temperature = %d.%d %d\r\n",
+	printf("Humidity - %f\r\nTemperature - %f\r\nChekSum - %u\r\n",
+			_dht.humidity,_dht.temperature,_dht.checkSum);*/
+
+	//DHT11Read(&_dht);
+	/*printf("humidity = %d.%d temperature = %d.%d %d\r\n",
 					dht11Data[0],dht11Data[1],dht11Data[2],dht11Data[3],_dht.state);
 	if(_dht.state  == DTH11_STATE_SUCCESS){
 		//：Data[0] humidity , Data[2] temperature .Data[1] and Data[3]
@@ -156,7 +168,7 @@ void myMain() {
 	}
 	else{
 		printf("error reading dht11\r\n");
-	}
+	}*/
 
 
 	while (1) {

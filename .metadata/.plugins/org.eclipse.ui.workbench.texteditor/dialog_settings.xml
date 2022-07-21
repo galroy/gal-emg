@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="ReadData"/>
+		<item key="selection" value="Dht11_reciveData_Async"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="Dht11_reciveData_Async"/>
+			<item value="Dht11_Init_Dht11"/>
+			<item value="Dht11_Awating_Respone_Start"/>
+			<item value="Dht11_reciveData"/>
+			<item value="Dht_onGpioInterrupt"/>
+			<item value="TempHum"/>
+			<item value="Dht11_init"/>
 			<item value="readData"/>
 			<item value="GPIO"/>
 			<item value="MX_TIM16_Init"/>
@@ -16,13 +23,6 @@
 			<item value="passLock5min"/>
 			<item value="HAL_I2C_Mem_Write"/>
 			<item value="passError"/>
-			<item value="huart2"/>
-			<item value="htim6"/>
-			<item value="adc2"/>
-			<item value="A0"/>
-			<item value="ledR"/>
-			<item value="__HAL_TIM_SET_AUTORELOAD"/>
-			<item value="_it("/>
 		</list>
 		<list key="replacehistory">
 		</list>

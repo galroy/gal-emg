@@ -301,17 +301,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(SW1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : SW2_Pin */
-  GPIO_InitStruct.Pin = SW2_Pin;
+  /*Configure GPIO pins : SW2_Pin DHT_Pin */
+  GPIO_InitStruct.Pin = SW2_Pin|DHT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(SW2_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : DHT_Pin */
-  GPIO_InitStruct.Pin = DHT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(DHT_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 

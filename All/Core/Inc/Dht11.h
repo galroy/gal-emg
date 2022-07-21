@@ -1,38 +1,40 @@
-/*
- * Dht11.h
- *
- *  Created on: Jul 18, 2022
- *      Author: USER-PC
- */
-
-#ifndef INC_DHT11_H_
-#define INC_DHT11_H_
+#ifndef _Dht11_
+#define _Dht11_
 
 #include "main.h"
 
-typedef enum Dth11State_
+
+typedef enum Dht11State_
 {
-	DTH11_STATE_INIT,
-	DTH11_STATE_SUCCESS,
-	DTH11_STATE_TIMEOUT,
-	DTH11_STATE_ERROR_CHECKSUM,
-	DTH11_STATE_ERROR,
-	DHT11_STATE_RETRAY_ERROR
+	DHT11_STATE_SLEEP,
+	DHT11_STATE_INIT,
+	DHT11_STATE_WAKING,
+	DHT11_STATE_AWATING_RESPONE_START,
+	DHT11_STATE_RECEIVING_BITS,
+	DHT11_STATE_DATA_RECEIVED,
+	DHT11_STATE_ERR,
+	DHT11_STATE_SUCCESS
 
-} Dth11State;
+} Dht11State;
 
 
-
-typedef struct DHT11_ {
-	double temparature;
+typedef struct Dht11_
+{
+	GPIO_TypeDef * gpioPort;
+	uint16_t gpioPin;
+	Dht11State state;
+	double temperature;
 	double humidity;
-	Dth11State state;
-	GPIO_TypeDef* port;
-	uint16_t pin;
+	int checkSum;
+}Dht11;
 
-} Dht11;
+void Dht11_init(Dht11 * dht);
+//void Dht11_reciveData(Dht11 * dht);
+void Dht11_Start(Dht11 * dht);
+void Dht11_Start_Async(Dht11 *dht);
+void Dht11_onGpioInterrupt(Dht11 *dht, uint16_t pin);
+//void Dht11_setInput(Dht11 * dht);
+//void Dht11_setOutput(Dht11 * dht);
+//void Dht11_printTempHum(Dht11 * dht);
 
-void DHT11Init(Dht11* dht, GPIO_TypeDef* port, uint16_t pin);
-void DHT11Read(Dht11* dht);
-
-#endif /* INC_DHT11_H_ */
+#endif

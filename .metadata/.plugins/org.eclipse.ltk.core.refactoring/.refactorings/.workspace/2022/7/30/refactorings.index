@@ -2,3 +2,7 @@
 1658237454226	Delete resource 'AllOld'
 1658238121177	Delete resource 'All/AllOld.ioc'
 1658238151327	Delete resource 'All'
+1658412038699	Delete resource 'All/Core/Inc/Dht11_20220721.h'
+1658412049708	Delete resource 'All/Core/Src/Dht11_210722.c'
+1658415732827	Delete resource 'All/Core/Inc/Dht.h'
+1658415742198	Delete resource 'All/Core/Src/Dht.c'

@@ -1,0 +1,203 @@
+
+//#include "led.h"
+//#include "button.h"
+//#include "buzzer.h"
+//#include "clock.h"
+
+#include "main.h"
+#include "MyMain.h"
+#include "Button.h"
+#include "Led.h"
+#include "Cli.h"
+#include "commTask.h"
+//#include "Dht.h"
+#include "Dht11.h"
+
+
+extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim16;
+extern uint8_t dht11Data[5];
+//extern TIM_HandleTypeDef htim3;
+//extern UART_HandleTypeDef huart2;
+
+Led _ledRed;
+Led _ledBlue;
+Button _buttonSw1;
+Button _buttonSw2;
+Dht11 _dht;
+//uint8_t Data[5] = { 0x00, 0x00, 0x00, 0x00, 0x00 };
+/*BUTTON button1;
+ BUZZER buzzer;
+ CLOCK clock1;
+ */
+/*int _write(int fd, char *ptr, int len) {
+	HAL_UART_Transmit(&huart2, (uint8_t*) ptr, len, HAL_MAX_DELAY);
+	return len;
+}*/
+
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+
+		////////////////led////////////////////////////////////
+		ledOnTimerInterrupt(&_ledBlue);
+		ledOnTimerInterrupt(&_ledRed);
+
+		//////////////clock//////////////////////////////////
+		//clockOnTimerInterrupt(&clock1);
+
+		/////////////buzzer/////////////////////////////////
+		//buzzerOnTimerInterrupt(&buzzer);
+
+		///////////button//////////////////////////////////
+		buttonOnTimerInterrupt(&_buttonSw1);
+		buttonOnTimerInterrupt(&_buttonSw2);
+
+
+
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t pin)
+{
+	buttonOnInterrupt(&_buttonSw1, pin);
+	buttonOnInterrupt(&_buttonSw2, pin);
+
+	prinf("%u\r\n",pin);
+	Dht11_onGpioInterrupt(&_dht, pin);
+}
+
+
+/*void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	//buttonInterrupt(&button1);
+//	if(buzzer.state == MUSIC_OFF){
+//	    	buzzer.state = MUSIC_ON;
+//			HAL_TIM_Base_Start_IT(&htim3);
+//			HAL_TIM_PWM_Start_IT(&htim3, TIM_CHANNEL_1);
+//			playNote(&buzzer);
+//		}
+//		else{
+//			buzzer.state = MUSIC_OFF;
+//			HAL_TIM_Base_Stop_IT(&htim3);
+//			HAL_TIM_PWM_Stop_IT(&htim3, TIM_CHANNEL_1);
+//		}
+
+}*/
+
+static void handleButtons()
+{
+	ButtonState state = buttonGetState(&_buttonSw1);
+	switch (state)
+	{
+	case BTN_PRESS_SHORT:
+		ledOff(&_ledBlue);
+		break;
+	case BTN_PRESS_LONG:
+		ledOn(&_ledBlue);
+		break;
+	case BTN_PRESS_DOUBLE:
+		ledBlink(&_ledBlue, 300);
+		break;
+	case BTN_PRESS_NONE:
+		// do nothing
+		break;
+	}
+	state = buttonGetState(&_buttonSw2);
+	switch (state)
+	{
+	case BTN_PRESS_SHORT:
+		ledOff(&_ledRed);
+		break;
+	case BTN_PRESS_LONG:
+		ledOn(&_ledRed);
+		break;
+	case BTN_PRESS_DOUBLE:
+		ledBlink(&_ledRed, 700);
+		break;
+	case BTN_PRESS_NONE:
+		// do nothing
+		break;
+	}
+}
+
+void myMain() {
+
+
+	HAL_NVIC_EnableIRQ(TIM6_DAC_IRQn);
+
+	 HAL_TIM_Base_Init(&htim6);
+	 HAL_TIM_Base_Start_IT(&htim6);
+
+	HAL_TIM_Base_Init(&htim16);
+	HAL_TIM_Base_Start(&htim16);
+
+	ledInit(&_ledBlue, LBLUE_GPIO_Port, LBLUE_Pin);
+	ledInit(&_ledRed, LRED_GPIO_Port, LRED_Pin);
+
+	//DHT11Init(&_dht, DHT_GPIO_Port, DHT_Pin);
+
+	buttonInit(&_buttonSw1, SW1_GPIO_Port, SW1_Pin);
+	buttonInit(&_buttonSw2, SW2_GPIO_Port, SW2_Pin);
+
+	//DHT11Read(&dht);
+
+
+	/*ledInit(&ledB, LD2_GPIO_Port, LD2_Pin);
+	ledInit(&ledR, LD3_GPIO_Port, LD3_Pin);*/
+	//ledBlink(&ledB, 300);
+	//buzzerInit(&buzzer);
+	//clockInit(&clock1);
+	//buttonInit(&button1, B2_GPIO_Port ,  B2_Pin);
+//	StateButon sw1State;
+	cliInit();
+	Dht11_init(&_dht);
+	//Dht11_Start(&_dht);
+	/*while(_dht.state != DHT11_STATE_SUCCESS){
+		Dht11_Start_Async(&_dht);
+	}
+
+	printf("Humidity - %f\r\nTemperature - %f\r\nChekSum - %u\r\n",
+			_dht.humidity,_dht.temperature,_dht.checkSum);*/
+
+	//DHT11Read(&_dht);
+	/*printf("humidity = %d.%d temperature = %d.%d %d\r\n",
+					dht11Data[0],dht11Data[1],dht11Data[2],dht11Data[3],_dht.state);
+	if(_dht.state  == DTH11_STATE_SUCCESS){
+		//：Data[0] humidity , Data[2] temperature .Data[1] and Data[3]
+		//Respectively 0 and 2 The decimal places of .Data[4] Used to verify .
+		printf("humidity = %d.%d temperature = %d.%d\r\n",
+				dht11Data[0],dht11Data[1],dht11Data[2],dht11Data[3]);
+	}
+	else{
+		printf("error reading dht11\r\n");
+	}*/
+
+
+	while (1) {
+
+		if (commTask()) {
+			handleCommand();
+		}
+		handleButtons();
+
+
+
+
+//		sw1State = Button_checkState(&button1);
+//
+//		if(sw1State != BUTTON_STATE_NONE){
+//		   switch(sw1State)
+//		  {
+//		     case BUTTON_STATE_PRESS:
+//			 printf("STATE \n\r"); break;
+//
+//		     case BUTTON_LONG_PRESS:
+//			 printf("LONG \n\r"); break;
+//
+//		     case BUTTON_DOUBLE_PRESS:
+//			 printf("DOBULE \n\r"); break;
+//		  }
+//		   sw1State = BUTTON_STATE_NONE;
+//		}
+
+	}
+
+}
